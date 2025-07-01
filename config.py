@@ -12,3 +12,7 @@ API_KEY = getenv("API_KEY")
 REDIS_HOST = getenv("HOST", "127.0.0.1")
 REDIS_PORT = int(getenv("REDIS_PORT", "6379"))
 REDIS_DB = int(getenv("REDIS_DB", "0"))
+
+# Bot config
+BOT_TOKEN = getenv("BOT_TOKEN")
+ADMIN_ID = int(getenv("ADMIN_ID"))
