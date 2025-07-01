@@ -30,8 +30,7 @@ class Client(AsyncSocketController):
                     try:
                         data = await self.read_json()
                         self.logger.debug("Received message from server:", data)
-                        if data["type"] in [1]:
-                            await self.process_message(message_type=data["type"], payload=data["payload"], config=data["config"])
+                        await self.process_message(message_type=data["type"], payload=data["payload"], config=data["config"])
                     except Exception as e:
                         raise e
                         self.logger.warning(f"Error reading message from server: {e}")
