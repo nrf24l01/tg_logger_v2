@@ -84,9 +84,29 @@ class TgLogger(Client):
                 changes_text = (
                     f"Было изменено сообщение [{author_name_escaped}](tg://user?id={author_id_str}) "
                     f"в [чате](https://t.me/c/{chat_id_str}/{message_id_str})\\. Было\n"
-                    f"```{old_text_escaped}```, стало ```{new_text_escaped}```"
+                    f"```{old_text_escaped}```стало```{new_text_escaped}```"
                 )
+                await self.save_message(message_id, payload["message"], auid, aunm, chat_id)
                 await self.send_changes(changes_text)
+        elif message_type == 3:
+            message_id = payload["msg_id"]
+            self.logger.debug(f"Deleted msg with id {message_id}")
+            old_text, auid, aunm, chat_id = await self.get_message(message_id)
+            if not old_text:
+                self.logger.warning(f"Сообщение с id {message_id} не найдено")
+                return
+            old_text_escaped = escape_markdown_v2(old_text)
+            author_name_escaped = escape_markdown_v2(aunm)
+            chat_id_str = str(chat_id)
+            message_id_str = str(message_id)
+            author_id_str = str(auid)
+            
+            changes_text = (
+                f"Было удаленно сообщение [{author_name_escaped}](tg://user?id={author_id_str}) "
+                f"в [чате](https://t.me/c/{chat_id_str}/{message_id_str})\\. Сообщение\n"
+                f"```{old_text_escaped}```"
+            )
+            await self.send_changes(changes_text)
 
 async def main():
     logger = Logger()
