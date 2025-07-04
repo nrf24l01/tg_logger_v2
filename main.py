@@ -62,8 +62,8 @@ class TgLogger(Client):
         self.logger.debug(f"Loaded message with id {id}")
         return parsed["text"], parsed["author_id"], parsed["author_name"], parsed["chat_id"]
     
-    async def process_message(self, message_type: int, payload: dict, config: dict):
-        if not config.get("log", False):
+    async def process_message(self, message_type: int, payload: dict, config: dict, system_config: dict):
+        if not config.get("log", True):
             return
         
         if message_type == 1:

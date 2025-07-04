@@ -30,7 +30,7 @@ class Client(AsyncSocketController):
                     try:
                         data = await self.read_json()
                         self.logger.debug("Received message from server:", data)
-                        await self.process_message(message_type=data["type"], payload=data["payload"], config=data["config"])
+                        await self.process_message(message_type=data["type"], payload=data["payload"], config=data["config"], system_config=data["system_config"])
                     except Exception as e:
                         raise e
                         self.logger.warning(f"Error reading message from server: {e}")
@@ -47,5 +47,5 @@ class Client(AsyncSocketController):
             self.writer.close()
             await self.writer.wait_closed()
     
-    async def process_message(self, message_type: int, payload: dict):
+    async def process_message(self, message_type: int, payload: dict, system_config: dict):
         raise NotImplementedError
