@@ -68,6 +68,7 @@ class TgLogger(Client):
         
         if message_type == 1:
             await self.save_message(payload["msg_id"], payload["message"], payload["sender"]["id"], payload["sender"]["name"], payload["chat_id"])
+            self.logger.info(f"Saved message with id {payload['msg_id']}")
         elif message_type == 2:
             message_id = payload["msg_id"]
             old_text, auid, aunm, chat_id = await self.get_message(message_id)
@@ -88,6 +89,7 @@ class TgLogger(Client):
                 )
                 await self.save_message(message_id, payload["message"], auid, aunm, chat_id)
                 await self.send_changes(changes_text)
+                self.logger.info(f"Detected change into {payload['msg_id']}")
         elif message_type == 3:
             message_id = payload["msg_id"]
             self.logger.debug(f"Deleted msg with id {message_id}")
@@ -107,6 +109,7 @@ class TgLogger(Client):
                 f"```{old_text_escaped}```"
             )
             await self.send_changes(changes_text)
+            self.logger.info(f"Detected deletion of message {message_id}.")
 
 async def main():
     logger = Logger()
