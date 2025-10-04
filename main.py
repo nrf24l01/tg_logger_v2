@@ -85,7 +85,7 @@ class TgLogger(Client):
                 changes_text = (
                     f"Было изменено сообщение [{author_name_escaped}](tg://user?id={author_id_str}) "
                     f"в [чате](https://t.me/c/{chat_id_str}/{message_id_str})\\. Было\n"
-                    f"```{old_text_escaped}```стало```{new_text_escaped}```"
+                    f"``` {old_text_escaped}```стало``` {new_text_escaped}```"
                 )
                 await self.save_message(message_id, payload["message"], auid, aunm, chat_id)
                 await self.send_changes(changes_text)
@@ -106,7 +106,7 @@ class TgLogger(Client):
             changes_text = (
                 f"Было удаленно сообщение [{author_name_escaped}](tg://user?id={author_id_str}) "
                 f"в [чате](https://t.me/c/{chat_id_str}/{message_id_str})\\. Сообщение\n"
-                f"```{old_text_escaped}```"
+                f"``` {old_text_escaped}```"
             )
             await self.send_changes(changes_text)
             self.logger.info(f"Detected deletion of message {message_id}.")
